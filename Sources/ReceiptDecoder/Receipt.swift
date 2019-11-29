@@ -43,7 +43,7 @@ extension Receipt {
         public var subscriptionExpirationDate: Date? //1708 string RFC 3339 date
         public var isInIntroOfferPeriod: Bool? //1719 integer
         public var cancellationDate: Date? //1712 string RFC 3339 date
-        public var webOrderLineItemId: Int64 //1711 integer
+        public var webOrderLineItemId: Int64? //1711 integer
         fileprivate init(field: ReceiptFieldsContainer.Field) throws {
             let container = ReceiptFieldsContainer(nodes: field.content.children)
             self.quantity = try container.int(identifier: 1701)
@@ -55,7 +55,7 @@ extension Receipt {
             self.subscriptionExpirationDate = try container.dateIfPresent(identifier: 1708)
             self.isInIntroOfferPeriod = try container.intIfPresent(identifier: 1719).map({ $0 > 0 })
             self.cancellationDate = try container.dateIfPresent(identifier: 1712)
-            self.webOrderLineItemId = try container.int64(identifier: 1711)
+            self.webOrderLineItemId = try container.int64IfPresent(identifier: 1711)
         }
     }
 }
