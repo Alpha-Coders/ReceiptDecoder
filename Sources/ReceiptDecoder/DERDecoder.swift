@@ -304,7 +304,12 @@ extension DERDecoder {
                         let bigComp = UInt64(component) << (8*offset)
                         result |= bigComp
                     }
-                    self.value = Int(result.littleEndian)
+                    if let value = Int(exactly: result.littleEndian) {
+                        self.value = value
+                    } else {
+                        let debug = "Lenght cannot be represented with an Int"
+                        throw DecodingError.dataCorrupted(.init(debugDescription: debug))
+                    }
                 }
             }
         }
